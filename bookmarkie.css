@@ -1,0 +1,174 @@
+/* Definatly not vibecoded. Absolutely. Especially this text. */
+
+/*
+	Reusable page styles:
+	.container          centered, width-limited page wrapper
+	.site-header/footer shared page framing
+	.card / .book-card  book or content panels
+	.button             gold primary action; use on buttons or links
+	.button-secondary   outlined-style secondary action
+	.button-danger      destructive action
+	.muted              secondary text
+	.brand-text         standard gold accent text
+	.gold-text-special  optional celebratory gold-gradient lettering
+	Palette variables below can also be used in page-specific styles.
+*/
+:root {
+	color-scheme: dark;
+	--bg: #121212;
+	--surface: #1d1d1d;
+	--surface-raised: #292929;
+	--border: #3a3a3a;
+	--text: #f3f0e8;
+	--text-muted: #b7b1a4;
+	--gold: #d6ad55;
+	--gold-hover: #edc66f;
+	--gold-ink: #17140d;
+	--danger: #e27d73;
+	--radius: 0.6rem;
+	--content-width: 72rem;
+	font-family: Inter, "Segoe UI", sans-serif;
+	color: var(--text);
+	background: var(--bg);
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	min-width: 320px;
+	min-height: 100vh;
+	margin: 0;
+	background: var(--bg);
+	color: var(--text);
+	line-height: 1.6;
+}
+
+.container {
+	width: min(calc(100% - 2rem), var(--content-width));
+	margin-inline: auto;
+    align-items: center;
+    text-align: center;
+}
+
+.site-header,
+.site-footer {
+	padding: 1rem 0;
+}
+.site-footer {
+    align-items: center;
+    text-align: center;
+}
+.site-footer {
+	border-top: 1px solid var(--border);
+	border-bottom: 0;
+	color: var(--text-muted);
+}
+.site-header img {
+    height: 100px;
+
+}
+
+.card,
+.book-card {
+	padding: 1.25rem;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background: var(--surface);
+}
+
+h1,
+h2,
+h3 {
+	line-height: 1.2;
+}
+
+a {
+	color: var(--gold);
+	text-underline-offset: 0.2em;
+}
+
+a:hover {
+	color: var(--gold-hover);
+}
+
+.muted {
+	color: var(--text-muted);
+}
+
+.brand-text {
+	color: var(--gold);
+}
+
+/* Gradients are reserved for this optional special-occasion text class. */
+.gold-text-special {
+	color: var(--gold);
+	background: linear-gradient(100deg, #f6df9b, var(--gold), #fff0bd);
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.button,
+button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	min-height: 2.75rem;
+	padding: 0.6rem 1rem;
+	border: 1px solid var(--gold);
+	border-radius: var(--radius);
+	background: var(--gold);
+	color: var(--gold-ink);
+	font: inherit;
+	font-weight: 650;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* The only hover animation: buttons grow slightly. */
+.button:hover,
+button:hover {
+	transform: scale(1.04);
+}
+
+.button-secondary {
+	background: transparent;
+	color: var(--gold);
+}
+
+.button-danger {
+	border-color: var(--danger);
+	background: var(--danger);
+	color: #1b100f;
+}
+
+input,
+textarea,
+select {
+	width: 100%;
+	padding: 0.7rem 0.8rem;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background: var(--surface);
+	color: var(--text);
+	font: inherit;
+}
+
+input::placeholder,
+textarea::placeholder {
+	color: var(--text-muted);
+}
+
+:focus-visible {
+	outline: 2px solid var(--gold);
+	outline-offset: 3px;
+}
+
+::selection {
+	background: var(--gold);
+	color: var(--gold-ink);
+}
