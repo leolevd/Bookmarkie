@@ -1,0 +1,1 @@
+(() => {console.log("Bookmarklet running."); let loc = encodeURIComponent(window.location.href); window.open(`https://bookmarkie.pro/bookmark?title=${encodeURIComponent(document.title)}&url=${loc}`, '_blank');})()

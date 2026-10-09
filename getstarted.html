@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="bookmarkie-icon-golden.svg">
+    <link rel="stylesheet" href="bookmarkie.css">
+    <title>Bookmarkie</title>
+</head>
+
+<body>
+    <a href="https://bookmarkie.pro" class="site-header">
+        <img src="bookmarkie-logo-golden.svg" alt="Bookmarkie Logo" class="logo">
+    </a>
+    <h1>Get Started with Bookmarkie</h1>
+    <div class="container" style="display: flex; flex-direction: column; align-items: center;">
+        <p>First of all, navigate to your browser and find a star icon (close to top right) like in the screenshot:</p>
+        <img src="step1.png" alt="Step 1" class="step-image">
+        <p>Next click on it to open the bookmark manager, and press "More":</p>
+        <img src="step2.png" alt="Step 1" class="step-image">
+        <p>Now name it "Bookmark" and paste the following code into the URL field:</p>
+        <code>javascript:(() => {console.log("Bookmarklet running."); let loc = encodeURIComponent(window.location.href); window.open(`https://bookmarkie.pro/bookmark?title=${encodeURIComponent(document.title)}&url=${loc}`, '_blank');})()</code>
+        <img src="step3.png" alt="Step 1" class="step-image">
+        <p>Finally, click "Save" to create the bookmark</p>
+        <img src="step4.png" alt="Step 1" class="step-image">
+        <p>To bookmark a page now, simply click the bookmark you just created.</p>
+        <button onclick="window.location.href='https://bookmarkie.pro/home'" class="button">Go to main cabinet</button>
+    </div>
+    <footer class="site-footer">
+        <p>Made by leolevd.</p>
+    </footer>
+    <script>
+        let code = document.querySelector("code")
+        code.addEventListener("click", function () {
+            navigator.clipboard.writeText(code.textContent)
+            alert("Code copied to clipboard!")
+        })
+
+    </script>
+</body>
+
+</html>
