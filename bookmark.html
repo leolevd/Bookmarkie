@@ -32,7 +32,7 @@
     </form>
     </div>
     <footer class="site-footer">
-        <p>Made by leolevd.</p>
+        <a href="github.com/leolevd/Bookmarkie">Made by leolevd.</a>
     </footer>
     <script>
         geturlparams = new URLSearchParams(window.location.search);
@@ -71,6 +71,7 @@
                 bookmarks[1] = data;
                 localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
             }
+            window.location.href = "https://bookmarkie.pro/home";
         });
     </script>
 </body>
