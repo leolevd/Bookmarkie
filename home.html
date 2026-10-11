@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="bookmarkie-icon-golden.svg">
+    <link rel="stylesheet" href="bookmarkie.css">
+    <title>Bookmarkie</title>
+</head>
+
+<body>
+    <div class="site-header">
+        <a href="https://bookmarkie.pro">
+            <img src="bookmarkie-logo-golden.svg" alt="Bookmarkie Logo" class="logo">
+        </a>
+        <a href="https://bookmarkie.pro/settings" style="display: block; position: absolute; right: 20px; top: 10px;" class="button">Settings</a>
+    </div>
+
+    <div class="container home-container">
+
+    </div>
+    <footer class="site-footer">
+        <p>Made by leolevd.</p>
+    </footer>
+    <script>
+        function deleteBookmark(id) {
+            let possibledata = localStorage.getItem("bookmarks");
+            if (possibledata) {
+                let bookmarks = JSON.parse(possibledata);
+                delete bookmarks[id];
+                localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+                location.reload();
+            }
+        }
+        let possibledata = localStorage.getItem("bookmarks");
+        if (possibledata) {
+            let bookmarks = JSON.parse(possibledata);
+            let container = document.querySelector(".container");
+            for (let id in bookmarks) {
+                let bookmark = bookmarks[id];
+                let bookmarkElement = document.createElement("div");
+                bookmarkElement.classList.add("bookmark");
+                if (bookmark.blur) {
+                    bookmarkElement.style.filter = "blur(7px)";
+                    bookmarkElement.addEventListener("click", function () {
+                        let password = prompt("Enter password to unblur the bookmark:");
+                        if (localStorage.getItem("bookmarkie_password")) {
+                            if (password === localStorage.getItem("bookmarkie_password")) {
+                                bookmarkElement.style.filter = "none";
+                            } else {
+                                alert("Incorrect password.");
+                            }
+                        } else {
+                            alert("No password set. Please set a password in the settings.");
+                        }
+
+                    });
+                }
+                bookmarkElement.innerHTML = `
+                    <h2 class="gold-text-special">${bookmark.title}</h2>
+                    <p><a href="${bookmark.url}" target="_blank">${bookmark.url}</a></p>
+                    <p>Tags: ${bookmark.tags}</p>
+                    <p>Notes: ${bookmark.notes}</p>
+                    <button onclick="deleteBookmark(${id})" class="button-danger">Delete</button>
+                `;
+                container.appendChild(bookmarkElement);
+            }
+        } else {
+            document.querySelector(".container").innerHTML = "<p>No bookmarks found.</p>";
+        }
+    </script>
+</body>
+
+</html>

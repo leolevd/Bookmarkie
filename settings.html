@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="bookmarkie-icon-golden.svg">
+    <link rel="stylesheet" href="bookmarkie.css">
+    <title>Bookmarkie</title>
+</head>
+<body>
+    <a href="https://bookmarkie.pro/" class="site-header">
+        <img src="bookmarkie-logo-golden.svg" alt="Bookmarkie Logo"
+            class="logo">
+    </a>
+    <div class="container">
+        <form>
+            <label for="password">Set a password to blur bookmarks:</label>
+            <input type="password" id="password" name="password" placeholder="Enter password">
+            <button type="button" onclick="setPassword()">Set Password</button>
+        </form>
+        <button type="button" onclick="savebackup()">Save Backup</button>
+        <button type="button" onclick="loadbackup()">Load Backup</button>
+        <p>Note: Loading a backup will overwrite your current bookmarks.</p>
+    </div>
+    <footer class="site-footer">
+        <p>Made by leolevd.</p>
+    </footer>
+    <script>
+        function setPassword() {
+            const passwordInput = document.getElementById("password");
+            const password = passwordInput.value;
+            if (password) {
+                localStorage.setItem("bookmarkie_password", password);
+                alert("Password set successfully!");
+                passwordInput.value = ""; // Clear the input field
+            } else {
+                alert("Please enter a valid password.");
+            }
+        }
+
+        function savebackup() {
+            const bookmarks = localStorage.getItem("bookmarks");
+            if (bookmarks) {
+                const blob = new Blob([bookmarks], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "bookmarkie_backup.json";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } else {
+                alert("No bookmarks to backup.");
+            }
+        }
+
+        function loadbackup() {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = ".json";
+            input.onchange = (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            const bookmarks = JSON.parse(e.target.result);
+                            localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+                            alert("Backup loaded successfully!");
+                            location.reload();
+                        } catch (error) {
+                            alert("Invalid backup file.");
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+    </script>
+</body>
+</html>

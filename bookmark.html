@@ -12,9 +12,66 @@
         <img src="bookmarkie-logo-golden.svg" alt="Bookmarkie Logo"
             class="logo">
     </a>
-    <p>Currently not implemented rn sry!!</p>
+    <div class="container">
+    <form>
+        <div style="text-align: left; align-items: left; display: flex; flex-direction: column;">
+        <label>Website url (with http(s)://):</label>
+        <input type="text" placeholder="e.g. https://bookmarkie.pro" name="url" required>
+        <label>Title:</label>
+        <input type="text" placeholder="e.g. Bookmarkie" name="title" required>
+        <label>Keywords (separated by commas):</label>
+        <input type="text" placeholder="e.g. web, bookmark, book" name="tags">
+        <label>Notes:</label>
+        <textarea placeholder="e.g. The very best bookmarking tool" name="notes"></textarea>
+        <div style="width: 100%; justify-content: center; display: flex;">
+            <label for="blur">Blur bookmark</label>
+        </div>
+        <input type="checkbox" id="blur" name="blur">
+        </div>
+        <button type="submit">Add Bookmark</button>
+    </form>
+    </div>
     <footer class="site-footer">
         <p>Made by leolevd.</p>
     </footer>
+    <script>
+        geturlparams = new URLSearchParams(window.location.search);
+        if (geturlparams.has("url")) {
+            document.querySelector("input[name=url]").value = decodeURIComponent(geturlparams.get("url"));
+        }
+        if (geturlparams.has("title")) {
+            document.querySelector("input[name=title]").value = decodeURIComponent(geturlparams.get("title"));
+        }
+    </script>
+    <script>
+        let form = document.querySelector("form");
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            let url = form.querySelector("input[name=url]").value;
+            let title = form.querySelector("input[name=title]").value;
+            let tags = form.querySelector("input[name=tags]").value;
+            let notes = form.querySelector("textarea[name=notes]").value;
+            let blur = form.querySelector("input[name=blur]").checked;
+            let data = {
+                url: url,
+                title: title,
+                tags: tags,
+                notes: notes,
+                blur: blur
+            };
+            // data model {1: {data}, 2: {data}, 3: {data}}
+            let possibledata = localStorage.getItem("bookmarks");
+            if (possibledata) {
+                let bookmarks = JSON.parse(possibledata);
+                let newId = Object.keys(bookmarks).length + 1;
+                bookmarks[newId] = data;
+                localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+            } else {
+                let bookmarks = {};
+                bookmarks[1] = data;
+                localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+            }
+        });
+    </script>
 </body>
 </html>

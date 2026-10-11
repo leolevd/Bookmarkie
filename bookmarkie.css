@@ -54,7 +54,13 @@ code {
 	padding: 0.2rem 0.4rem;
 	border-radius: var(--radius);
 }
-
+.bookmark {
+	background: var(--surface-raised);
+	font-family: "Fira Code", monospace;
+	padding: 0.2rem 0.4rem;
+	border-radius: var(--radius);
+	margin-top: 0.4rem;
+}
 .container {
 	width: min(calc(100% - 2rem), var(--content-width));
 	margin-inline: auto;
@@ -118,10 +124,17 @@ a:hover {
 
 /* Gradients are reserved for this optional special-occasion text class. */
 .gold-text-special {
+	display: inline-block;
 	color: var(--gold);
-	background: linear-gradient(100deg, #f6df9b, var(--gold), #fff0bd);
+	background-image: linear-gradient(100deg, #b8860b 0%, #fff0bd 50%, #b8860b 100%);
+	-webkit-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
+}
+
+html {
+	scrollbar-width: thin;
+	scrollbar-color: var(--gold) #111;
 }
 
 .button,
@@ -163,6 +176,8 @@ input,
 textarea,
 select {
 	width: 100%;
+	margin-top: 0.5rem;
+	margin-bottom: 1rem;
 	padding: 0.7rem 0.8rem;
 	border: 1px solid var(--border);
 	border-radius: var(--radius);
