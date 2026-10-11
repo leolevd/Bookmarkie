@@ -43,11 +43,18 @@
                 bookmarkElement.classList.add("bookmark");
                 if (bookmark.blur) {
                     bookmarkElement.style.filter = "blur(7px)";
-                    bookmarkElement.addEventListener("click", function () {
+                    bookmarkElement.addEventListener("click", function (event) {
+                        console.log("clicked", bookmarkElement.style.filter);
+                        if (bookmarkElement.style.filter !== "blur(7px)") return;
+                        event.preventDefault();
+                        event.stopPropagation();
                         let password = prompt("Enter password to unblur the bookmark:");
                         if (localStorage.getItem("bookmarkie_password")) {
                             if (password === localStorage.getItem("bookmarkie_password")) {
                                 bookmarkElement.style.filter = "none";
+                                bookmarkElement.querySelectorAll("*").forEach(function (element) {
+                                    element.style.pointerEvents = "";
+                                });
                             } else {
                                 alert("Incorrect password.");
                             }
@@ -55,7 +62,7 @@
                             alert("No password set. Please set a password in the settings.");
                         }
 
-                    });
+                    }, true);
                 }
                 bookmarkElement.innerHTML = `
                     <h2 class="gold-text-special">${bookmark.title}</h2>
@@ -64,6 +71,11 @@
                     <p>Notes: ${bookmark.notes}</p>
                     <button onclick="deleteBookmark(${id})" class="button-danger">Delete</button>
                 `;
+                if (bookmark.blur) {
+                    bookmarkElement.querySelectorAll("*").forEach(function (element) {
+                        element.style.pointerEvents = "none";
+                    });
+                }
                 container.appendChild(bookmarkElement);
             }
         } else {
