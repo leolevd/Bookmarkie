@@ -33,8 +33,7 @@
     <script>
         let code = document.querySelector("code")
         code.addEventListener("click", function () {
-            navigator.clipboard.writeText(code.textContent)
-            alert("Code copied to clipboard!")
+            navigator.clipboard.writeText(code.textContent).then(() => alert("Code copied to clipboard!")).catch(() => alert("Could not copy code. Please copy it manually."));
         })
 
     </script>

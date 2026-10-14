@@ -34,11 +34,10 @@
             }
         }
         let possibledata = localStorage.getItem("bookmarks");
-        if (possibledata) {
+        if (possibledata && Object.keys(JSON.parse(possibledata)).length > 0) {
             let bookmarks = JSON.parse(possibledata);
             let container = document.querySelector(".container");
-            for (let id in bookmarks) {
-                let bookmark = bookmarks[id];
+            for (const [id, bookmark] of Object.entries(bookmarks)) {
                 let bookmarkElement = document.createElement("div");
                 bookmarkElement.classList.add("bookmark");
                 if (bookmark.blur) {
@@ -64,13 +63,46 @@
 
                     }, true);
                 }
-                bookmarkElement.innerHTML = `
-                    <h2 class="gold-text-special">${bookmark.title}</h2>
-                    <p><a href="${bookmark.url}" target="_blank">${bookmark.url}</a></p>
-                    <p>Tags: ${bookmark.tags}</p>
-                    <p>Notes: ${bookmark.notes}</p>
-                    <button onclick="deleteBookmark(${id})" class="button-danger">Delete</button>
-                `;
+                //made by ai START
+                const title = document.createElement("h2");
+                title.classList.add("gold-text-special");
+                title.textContent = String(bookmark.title ?? "");
+                bookmarkElement.appendChild(title);
+
+                const urlParagraph = document.createElement("p");
+                const bookmarkUrl = String(bookmark.url ?? "");
+                let parsedUrl;
+                try {
+                    parsedUrl = new URL(bookmarkUrl);
+                } catch {
+                    // Invalid URLs remain visible as plain text.
+                }
+                if (parsedUrl && (parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:")) {
+                    const link = document.createElement("a");
+                    link.href = parsedUrl.href;
+                    link.target = "_blank";
+                    link.rel = "noopener noreferrer";
+                    link.textContent = bookmarkUrl;
+                    urlParagraph.appendChild(link);
+                } else {
+                    urlParagraph.textContent = bookmarkUrl;
+                }
+                bookmarkElement.appendChild(urlParagraph);
+
+                const tags = document.createElement("p");
+                tags.textContent = `Tags: ${String(bookmark.tags ?? "")}`;
+                bookmarkElement.appendChild(tags);
+
+                const notes = document.createElement("p");
+                notes.textContent = `Notes: ${String(bookmark.notes ?? "")}`;
+                bookmarkElement.appendChild(notes);
+
+                const deleteButton = document.createElement("button");
+                deleteButton.classList.add("button-danger");
+                deleteButton.textContent = "Delete";
+                deleteButton.addEventListener("click", () => deleteBookmark(id));
+                bookmarkElement.appendChild(deleteButton);
+                // made by ai FINISH
                 if (bookmark.blur) {
                     bookmarkElement.querySelectorAll("*").forEach(function (element) {
                         element.style.pointerEvents = "none";

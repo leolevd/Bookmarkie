@@ -37,10 +37,10 @@
     <script>
         geturlparams = new URLSearchParams(window.location.search);
         if (geturlparams.has("url")) {
-            document.querySelector("input[name=url]").value = decodeURIComponent(geturlparams.get("url"));
+            document.querySelector("input[name=url]").value = geturlparams.get("url");
         }
         if (geturlparams.has("title")) {
-            document.querySelector("input[name=title]").value = decodeURIComponent(geturlparams.get("title"));
+            document.querySelector("input[name=title]").value = geturlparams.get("title");
         }
     </script>
     <script>
@@ -63,7 +63,8 @@
             let possibledata = localStorage.getItem("bookmarks");
             if (possibledata) {
                 let bookmarks = JSON.parse(possibledata);
-                let newId = Object.keys(bookmarks).length + 1;
+                let newId = Date.now();
+                while (bookmarks[newId]) newId++;
                 bookmarks[newId] = data;
                 localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
             } else {
