@@ -37,9 +37,21 @@
         if (possibledata && Object.keys(JSON.parse(possibledata)).length > 0) {
             let bookmarks = JSON.parse(possibledata);
             let container = document.querySelector(".container");
+            const search = document.createElement("input");
+            search.type = "search";
+            search.placeholder = "Search by tag...";
+            search.setAttribute("aria-label", "Search bookmarks by tag");
+            container.appendChild(search);
+
+            const noMatches = document.createElement("p");
+            noMatches.textContent = "No bookmarks match that tag.";
+            noMatches.hidden = true;
+            container.appendChild(noMatches);
+
             for (const [id, bookmark] of Object.entries(bookmarks)) {
                 let bookmarkElement = document.createElement("div");
                 bookmarkElement.classList.add("bookmark");
+                bookmarkElement.dataset.tags = String(bookmark.tags ?? "");
                 if (bookmark.blur) {
                     bookmarkElement.style.filter = "blur(7px)";
                     bookmarkElement.addEventListener("click", function (event) {
@@ -90,7 +102,7 @@
                 bookmarkElement.appendChild(urlParagraph);
 
                 const tags = document.createElement("p");
-                tags.textContent = `Tags: ${String(bookmark.tags ?? "")}`;
+                tags.textContent = `${String(bookmark.tags ?? "")}`;
                 bookmarkElement.appendChild(tags);
 
                 const notes = document.createElement("p");
@@ -110,6 +122,17 @@
                 }
                 container.appendChild(bookmarkElement);
             }
+
+            search.addEventListener("input", function () {
+                const query = search.value.trim().toLocaleLowerCase();
+                let visibleCount = 0;
+                container.querySelectorAll(".bookmark").forEach(function (bookmarkElement) {
+                    const matches = bookmarkElement.dataset.tags.toLocaleLowerCase().includes(query);
+                    bookmarkElement.hidden = !matches;
+                    if (matches) visibleCount++;
+                });
+                noMatches.hidden = visibleCount > 0;
+            });
         } else {
             document.querySelector(".container").innerHTML = "<p>No bookmarks found.</p>";
         }
